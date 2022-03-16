@@ -1,15 +1,15 @@
 import React, { Fragment } from 'react';
 import { Container } from 'react-bootstrap';
-import Header from './components/gen-layout/Header';
-import Footer from './components/gen-layout/Footer';
-
+import Header from './components/shared-layout/Header';
+import Footer from './components/shared-layout/Footer';
+import HomeScreens from './screens/HomeScreens';
 const App = () => {
 	return (
 		<Fragment>
 			<Header />
 			<main className='py-3'>
 				<Container>
-					<h1>Ghost shop is here</h1>
+					<HomeScreens/>
 				</Container>
 			</main>
 			<Footer />
