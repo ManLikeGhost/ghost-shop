@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import {
 	Row,
@@ -10,16 +10,34 @@ import {
 	ListGroupItem,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
-import products from '../products';
+import { useDispatch, useSelector } from 'react-redux';
+// import products from '../products';
+import { listProductDetail } from '../redux/actions/productActions';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
 
-const ProductScreen = ({ match }) => {
-	const product = products.find((p) => p._id === match.params.id);
+const ProductScreen = ( { match } ) => {
+	const dispatch = useDispatch()
+	const productDetails = useSelector((state)=>state.productDetails)
+	const{loading, error, product} = productDetails 
+	useEffect( () => {
+		dispatch(listProductDetail(match.params.id))
+	
+		
+	}, [dispatch,match,])
+	// const product = {}
+	// const product = products.find((p) => p._id === match.params.id);
 	return (
 		<>
 			<Link className='btn btn-light my-3' to='/'>
 				Go Back
 			</Link>
-			<Row>
+			{
+				loading ? (
+				<Loader/>
+			) : error ? (
+					<Message variant='danger'>{error}</Message> 
+			) : (<Row>
 				<Col md={6}>
 					<Image src={product.image} alt={product.name} fluid />
 				</Col>
@@ -70,6 +88,9 @@ const ProductScreen = ({ match }) => {
 					</Card>
 				</Col>
 			</Row>
+	)
+			}
+			
 		</>
 	);
 };
