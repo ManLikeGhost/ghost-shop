@@ -1,9 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	Row,
+	Col,
+	ListGroup,
+	Image,
+	Form,
+	Button,
+	Card,
+} from 'react-bootstrap';
+import Message from '../components/Message';
+import { addToCart } from '../redux/actions/cartAction';
 
-const CartScreen = () => {
-  return (
-    <div>CartScreen</div>
-  )
-}
+const CartScreen = ({ match, location, history }) => {
+	const productId = match.params.id;
+	const qty = location.search ? Number(location.search.split('=')[1]) : 1;
 
-export default CartScreen
+  const dispatch = useDispatch();
+  
+  const cart = useSelector(state => state.cart)
+
+  const { cartItems } = cart
+
+	useEffect(() => {
+		if (productId) {
+			dispatch(addToCart(productId, qty));
+		}
+	}, [productId, dispatch, qty]);
+
+	return <div>CartScreen</div>;
+};
+
+export default CartScreen;
