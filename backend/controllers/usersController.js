@@ -1,6 +1,6 @@
 import User from '../models/userModels.js';
 import asyncHandler from 'express-async-handler';
-
+import generateToken from '../utils/generateToken.js'
 
 
 
@@ -21,7 +21,7 @@ const authUser = asyncHandler( async ( req, res ) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token: null
+      token: generateToken( user._id )
     } )
   } else {
     res.status( 401 )
@@ -30,4 +30,28 @@ const authUser = asyncHandler( async ( req, res ) => {
 } )
 
 
-export { authUser }
+
+//@desc GET User profile
+//@route GET /api/users/profile
+//@access Private
+
+const fetchUserProfile = asyncHandler( async ( req, res ) => {
+  const user = await User.findById( req.user._id)
+  // res.send( 'Success' )
+  if ( user ) {
+    res.json( {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    })
+  } else {
+    res.status( 404 )
+    throw new Error('User Not Found')
+  }
+  // console.log( user )
+
+} )
+
+
+export { authUser, fetchUserProfile }
