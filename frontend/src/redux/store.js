@@ -6,10 +6,15 @@ import {
 	productDetailsReducer,
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducer';
+import { userLoginReducer } from './reducers/userReducers';
+
+
+
 const reducer = combineReducers({
 	productList: productListReducer,
 	productDetails: productDetailsReducer,
 	cart: cartReducer,
+	userLogin: userLoginReducer,
 });
 
 const initialState = {};
